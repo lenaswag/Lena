@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Past or Present Perfect?</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f7fb;
+      color: #222;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 850px;
+      margin: 40px auto;
+    }
+
+    .header {
+      background-color: white;
+      padding: 30px;
+      border-radius: 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #3957c8;
+    }
+
+    .intro {
+      color: #666;
+      line-height: 1.7;
+    }
+
+    .rule-box {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .rule {
+      flex: 1;
+      padding: 18px;
+      background-color: #f1f4ff;
+      border-radius: 12px;
+      line-height: 1.6;
+    }
+
+    .rule h3 {
+      margin-top: 0;
+      color: #2e46a5;
+    }
+
+    .progress-box {
+      background-color: white;
+      padding: 15px 20px;
+      border-radius: 14px;
+      margin-bottom: 15px;
+      box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background-color: #e4e7ed;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      width: 0%;
+      background-color: #3957c8;
+      transition: width 0.3s;
+    }
+
+    .quiz-card {
+      background-color: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .question-number {
+      color: #3957c8;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .instruction {
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    .verb {
+      font-size: 15px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .sentence {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+
+    .answer-area {
+      display: flex;
+      gap: 10px;
+    }
+
+    input {
+      flex: 1;
+      padding: 13px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #3957c8;
+    }
+
+    button {
+      padding: 13px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #checkBtn {
+      background-color: #3957c8;
+      color: white;
+    }
+
+    #nextBtn {
+      background-color: #eceef3;
+      color: #222;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .feedback {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 12px;
+      line-height: 1.6;
+    }
+
+    .correct {
+      display: block;
+      background-color: #e9f9ef;
+      color: #167548;
+    }
+
+    .hint {
+      display: block;
+      background-color: #fff7dd;
+      color: #8a5800;
+    }
+
+    .wrong {
+      display: block;
+      background-color: #ffecec;
+      color: #b42318;
+    }
+
+    .result-card {
+      display: none;
+      background-color: white;
+      padding: 30px;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .score {
+      font-size: 40px;
+      font-weight: bold;
+      color: #3957c8;
+      margin: 15px 0;
+    }
+
+    .review {
+      margin-top: 25px;
+      text-align: left;
+    }
+
+    .review-item {
+      padding: 14px 0;
+      border-top: 1px solid #eee;
+      line-height: 1.6;
+    }
+
+    #restartBtn {
+      margin-top: 25px;
+      background-color: #3957c8;
+      color: white;
+    }
+
+    @media (max-width: 650px) {
+      .rule-box {
+        flex-direction: column;
+      }
+
+      .answer-area {
+        flex-direction: column;
+      }
+
+      .sentence {
+        font-size: 19px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="header">
+      <h1>Past or Present Perfect?</h1>
+
+      <p class="intro">
+        문장 속 시간 표현과 의미를 보고
+        <strong>단순 과거형(Simple Past)</strong>과
+        <strong>현재완료형(Present Perfect)</strong>을 구분해 보세요.
+      </p>
+
+      <div class="rule-box">
+
+        <div class="rule">
+          <h3>Simple Past</h3>
+          <p>
+            과거의 특정 시점에 시작되고 끝난 행동을 나타낼 때 사용합니다.
+          </p>
+          <p>
+            <strong>주요 단서:</strong><br>
+            yesterday, last year, two days ago, in 2024
+          </p>
+        </div>
+
+        <div class="rule">
+          <h3>Present Perfect</h3>
+          <p>
+            과거의 경험이나 행동이 현재와 관련되어 있을 때 사용합니다.
+          </p>
+          <p>
+            <strong>형태:</strong> have/has + past participle
+          </p>
+          <p>
+            <strong>주요 단서:</strong><br>
+            ever, never, already, yet, since, for
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="quizArea">
+
+      <div class="progress-box">
+
+        <div class="progress-info">
+          <span id="progressText">문제 1 / 10</span>
+          <span id="scoreText">점수: 0</span>
+        </div>
+
+        <div class="progress-bar">
+          <div class="progress" id="progressBar"></div>
+        </div>
+
+      </div>
+
+      <div class="quiz-card">
+
+        <div class="question-number" id="questionNumber">
+          Question 1
+        </div>
+
+        <div class="instruction">
+          괄호 안의 동사를 알맞은 형태로 바꾸어 빈칸을 완성하세요.
+          <strong>단순 과거형</strong> 또는
+          <strong>현재완료형</strong>을 사용하세요.
+        </div>
+
+        <div class="verb">
+          주어진 동사:
+          <strong id="verb"></strong>
+        </div>
+
+        <div class="sentence" id="sentence"></div>
+
+        <div class="answer-area">
+
+          <input
+            type="text"
+            id="answerInput"
+            placeholder="정답을 입력하세요"
+          />
+
+          <button id="checkBtn">
+            정답 확인
+          </button>
+
+        </div>
+
+        <div id="feedback" class="feedback"></div>
+
+        <button id="nextBtn">
+          다음 문제
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="result-card" id="resultCard">
+
+      <h2>활동 완료!</h2>
+
+      <div class="score" id="finalScore"></div>
+
+      <p id="resultMessage"></p>
+
+      <div class="review" id="review"></div>
+
+      <button id="restartBtn">
+        다시 풀기
+      </button>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    const questions = [
+
+      {
+        verb: "visit",
+        sentence: "I _____ Jeju Island last summer.",
+        answer: "visited",
+        tense: "Simple Past",
+        hint: "'last summer'에 주목하세요. 이미 끝난 과거의 특정 시점을 나타냅니다.",
+        explanation: "'last summer'는 이미 끝난 과거 시점이므로 단순 과거형을 사용합니다."
+      },
+
+      {
+        verb: "visit",
+        sentence: "I _____ Jeju Island three times.",
+        answer: "have visited",
+        tense: "Present Perfect",
+        hint: "언제 방문했는지는 중요하지 않습니다. 지금까지의 경험을 나타내고 있어요.",
+        explanation: "정확한 과거 시점 없이 지금까지의 경험을 말할 때 현재완료형을 사용합니다."
+      },
+
+      {
+        verb: "finish",
+        sentence: "She _____ her homework already.",
+        answer: "has finished",
+        tense: "Present Perfect",
+        hint: "'already'에 주목하세요. 과거에 완료된 행동이 현재와 연결되어 있습니다.",
+        explanation: "'already'는 현재완료형과 자주 사용되며, 지금 이미 완료된 상태임을 나타냅니다."
+      },
+
+      {
+        verb: "finish",
+        sentence: "She _____ her homework at 9 p.m. yesterday.",
+        answer: "finished",
+        tense: "Simple Past",
+        hint: "'at 9 p.m. yesterday'라는 구체적인 과거 시점이 있습니다.",
+        explanation: "구체적이고 이미 끝난 과거 시점이 제시되었으므로 단순 과거형을 사용합니다."
+      },
+
+      {
+        verb: "see",
+        sentence: "Have you ever _____ a shooting star?",
+        answer: "seen",
+        tense: "Present Perfect",
+        hint: "'ever'는 지금까지의 경험을 묻는 표현입니다. have + 무엇이 와야 할까요?",
+        explanation: "'ever'를 사용하여 지금까지의 경험을 묻고 있으므로 현재완료형을 사용합니다."
+      },
+
+      {
+        verb: "see",
+        sentence: "We _____ a shooting star during our camping trip last weekend.",
+        answer: "saw",
+        tense: "Simple Past",
+        hint: "'last weekend'는 이미 끝난 과거의 시간입니다.",
+        explanation: "'last weekend'라는 완료된 과거 시점이 있으므로 단순 과거형을 사용합니다."
+      },
+
+      {
+        verb: "live",
+        sentence: "My family _____ in this town since 2021.",
+        answer: "has lived",
+        tense: "Present Perfect",
+        hint: "'since 2021'은 과거에 시작해서 현재까지 이어지는 상황을 나타냅니다.",
+        explanation: "'since'는 과거부터 현재까지 이어지는 상황을 나타낼 때 현재완료형과 사용합니다."
+      },
+
+      {
+        verb: "live",
+        sentence: "My family _____ in Busan from 2018 to 2020.",
+        answer: "lived",
+        tense: "Simple Past",
+        hint: "'from 2018 to 2020'은 이미 완전히 끝난 기간입니다.",
+        explanation: "2018년부터 2020년까지라는 기간은 이미 끝났으므로 단순 과거형을 사용합니다."
+      },
+
+      {
+        verb: "lose",
+        sentence: "Oh no! I _____ my phone. I can't find it anywhere.",
+        answer: "have lost",
+        tense: "Present Perfect",
+        hint: "휴대전화를 잃어버린 결과가 지금도 계속되고 있습니다.",
+        explanation: "과거의 행동이 현재 상황에 직접적인 영향을 주고 있으므로 현재완료형을 사용합니다."
+      },
+
+      {
+        verb: "lose",
+        sentence: "I _____ my old phone on the bus two years ago.",
+        answer: "lost",
+        tense: "Simple Past",
+        hint: "'two years ago'에 주목하세요. 특정한 과거 시점을 나타냅니다.",
+        explanation: "'two years ago'는 이미 끝난 특정 과거 시점이므로 단순 과거형을 사용합니다."
+      }
+
+    ];
+
+
+    let currentQuestion = 0;
+    let score = 0;
+    let attempts = 0;
+    let finished = false;
+
+
+    const sentence = document.getElementById("sentence");
+    const verb = document.getElementById("verb");
+    const answerInput = document.getElementById("answerInput");
+    const checkBtn = document.getElementById("checkBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const feedback = document.getElementById("feedback");
+
+    const questionNumber = document.getElementById("questionNumber");
+    const progressText = document.getElementById("progressText");
+    const scoreText = document.getElementById("scoreText");
+    const progressBar = document.getElementById("progressBar");
+
+    const quizArea = document.getElementById("quizArea");
+    const resultCard = document.getElementById("resultCard");
+    const finalScore = document.getElementById("finalScore");
+    const resultMessage = document.getElementById("resultMessage");
+    const review = document.getElementById("review");
+    const restartBtn = document.getElementById("restartBtn");
+
+
+    function loadQuestion() {
+
+      attempts = 0;
+      finished = false;
+
+      const q = questions[currentQuestion];
+
+      sentence.textContent = q.sentence;
+      verb.textContent = q.verb;
+
+      questionNumber.textContent =
+        "Question " + (currentQuestion + 1);
+
+      progressText.textContent =
+        "문제 " + (currentQuestion + 1) +
+        " / " + questions.length;
+
+      scoreText.textContent =
+        "점수: " + score;
+
+      progressBar.style.width =
+        (currentQuestion / questions.length) * 100 + "%";
+
+      answerInput.value = "";
+      answerInput.disabled = false;
+
+      checkBtn.disabled = false;
+
+      nextBtn.style.display = "none";
+
+      feedback.className = "feedback";
+      feedback.innerHTML = "";
+
+      answerInput.focus();
+
+    }
+
+
+    function normalize(text) {
+      return text
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, " ");
+    }
+
+
+    function checkAnswer() {
+
+      if (finished) {
+        return;
+      }
+
+      const userAnswer =
+        normalize(answerInput.value);
+
+      const q =
+        questions[currentQuestion];
+
+
+      if (userAnswer === "") {
+
+        feedback.className =
+          "feedback hint";
+
+        feedback.innerHTML =
+          "<strong>답을 먼저 입력해 주세요.</strong>";
+
+        return;
+      }
+
+
+      attempts++;
+
+
+      if (
+        userAnswer ===
+        normalize(q.answer)
+      ) {
+
+        score++;
+
+        scoreText.textContent =
+          "점수: " + score;
+
+        feedback.className =
+          "feedback correct";
+
+        feedback.innerHTML =
+          "<strong>정답입니다!</strong><br>" +
+          "정답: " + q.answer +
+          "<br>" +
+          "문법: " + q.tense +
+          "<br><br>" +
+          q.explanation;
+
+        finishQuestion();
+
+      }
+
+      else if (attempts === 1) {
+
+        feedback.className =
+          "feedback hint";
+
+        feedback.innerHTML =
+          "<strong>아쉬워요! 한 번 더 도전해 보세요.</strong><br><br>" +
+          "<strong>힌트:</strong> " +
+          q.hint;
+
+        answerInput.select();
+
+      }
+
+      else {
+
+        feedback.className =
+          "feedback wrong";
+
+        feedback.innerHTML =
+          "<strong>정답을 확인해 보세요.</strong><br>" +
+          "정답: " + q.answer +
+          "<br>" +
+          "문법: " + q.tense +
+          "<br><br>" +
+          q.explanation;
+
+        finishQuestion();
+
+      }
+
+    }
+
+
+    function finishQuestion() {
+
+      finished = true;
+
+      answerInput.disabled = true;
+      checkBtn.disabled = true;
+
+      nextBtn.style.display =
+        "inline-block";
+
+    }
+
+
+    function nextQuestion() {
+
+      currentQuestion++;
+
+      if (
+        currentQuestion <
+        questions.length
+      ) {
+
+        loadQuestion();
+
+      }
+
+      else {
+
+        showResult();
+
+      }
+
+    }
+
+
+    function showResult() {
+
+      quizArea.style.display =
+        "none";
+
+      resultCard.style.display =
+        "block";
+
+      finalScore.textContent =
+        score + " / " +
+        questions.length;
+
+
+      if (score >= 9) {
+
+        resultMessage.textContent =
+          "아주 잘했어요! 단순 과거형과 현재완료형의 차이를 잘 구분하고 있습니다.";
+
+      }
+
+      else if (score >= 7) {
+
+        resultMessage.textContent =
+          "잘했어요! 틀린 문제의 시간 표현과 의미를 다시 확인해 보세요.";
+
+      }
+
+      else {
+
+        resultMessage.textContent =
+          "조금 더 연습해 봅시다. 과거의 시간이 완전히 끝났는지, 현재와 연결되어 있는지를 생각해 보세요.";
+
+      }
+
+
+      review.innerHTML =
+        "<h3>핵심 정리</h3>" +
+
+        "<div class='review-item'>" +
+        "<strong>Simple Past</strong><br>" +
+        "과거의 특정 시점에 일어나고 끝난 행동<br>" +
+        "예: yesterday, last week, two years ago" +
+        "</div>" +
+
+        "<div class='review-item'>" +
+        "<strong>Present Perfect</strong><br>" +
+        "과거의 경험이나 행동이 현재와 연결되어 있는 경우<br>" +
+        "예: ever, never, already, yet, since, for" +
+        "</div>";
+
+    }
+
+
+    function restartQuiz() {
+
+      currentQuestion = 0;
+      score = 0;
+
+      quizArea.style.display =
+        "block";
+
+      resultCard.style.display =
+        "none";
+
+      loadQuestion();
+
+    }
+
+
+    checkBtn.addEventListener(
+      "click",
+      checkAnswer
+    );
+
+
+    nextBtn.addEventListener(
+      "click",
+      nextQuestion
+    );
+
+
+    restartBtn.addEventListener(
+      "click",
+      restartQuiz
+    );
+
+
+    answerInput.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (event.key === "Enter") {
+
+          if (finished) {
+
+            nextQuestion();
+
+          }
+
+          else {
+
+            checkAnswer();
+
+          }
+
+        }
+
+      }
+    );
+
+
+    loadQuestion();
+
+  </script>
+
+</body>
+</html>
